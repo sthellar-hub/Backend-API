@@ -1,5 +1,5 @@
 import express from 'express';
-import { listarCarros, adicionarCarros } from './repositories/carrosRepository.js';
+import * as repoCarro from './repositories/carrosRepository.js';
 import { listarTurma, adicionarTurma } from "./repositories/turmaRepository.js";
 import { listarDesenho, adicionarDesenho } from './repositories/desenhoRepository.js';
 import { listarPizzas , adicionarPizzas } from './repositories/pizzasRepository.js';
@@ -23,6 +23,12 @@ api.post('/carros', async (req, resp) => {
     let id = await adicionarCarros(Nova);
     resp.send({newId: id})
 })
+api.get('/carros/:id', async (req, resp) => {
+    let id = Number(req.params.id);
+    let registros = await repoCarro.consultarCarros(id);
+    resp.send(registros);
+  })
+
 
 //http://localhost:5000/turma
 api.get('/turma', async (req, resp) => {

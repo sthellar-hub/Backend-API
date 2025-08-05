@@ -22,3 +22,13 @@ export async function adicionarCarros(novoCr) {
   return info.insertId;
 }
 
+export async function consultarCarros() {
+  const comando = `
+    SELECT *
+       FROM cursos
+     WHERE id = ? 
+  `
+  const [registros] = await connection.query(comando, [id])
+  return registros[0]; 
+}
+
