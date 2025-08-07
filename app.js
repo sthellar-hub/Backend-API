@@ -1,33 +1,62 @@
 import express from 'express';
-import * as repoCarro from './repositories/carrosRepository.js';
-import { listarTurma, adicionarTurma } from "./repositories/turmaRepository.js";
-import { listarDesenho, adicionarDesenho } from './repositories/desenhoRepository.js';
-import { listarPizzas , adicionarPizzas } from './repositories/pizzasRepository.js';
-import { listarEstados, adicionarEstados } from './repositories/estadosRepository.js';
-import { listarFuncionarios, adicionarFuncionarios } from './repositories/funcionarioRepository.js';
-import { listarPaciente, adicionarPaciente } from './repositories/hospitalRepository.js';
-import { listarMercado, adicionarMercado } from './repositories/mercadoRepository.js';
-import { listarRoupa, adicionarRoupa } from './repositories/roupaRepository.js';
-import { listarViagem, adicionarViagem } from './repositories/viagemRepository.js';
+import * as repoCarros from './repositories/carrosRepository.js';
+import * as repoTurma from "./repositories/turmaRepository.js";
+import * as repoDesenho from './repositories/desenhoRepository.js';
+import * as repoPizzas from './repositories/pizzasRepository.js';
+import * as repoEstados from './repositories/estadosRepository.js';
+import * as repoFuncionario from './repositories/funcionarioRepository.js';
+import * as repoHospital from './repositories/hospitalRepository.js';
+import * as repoMercado from './repositories/mercadoRepository.js';
+import * as repoRoupa from './repositories/roupaRepository.js';
+import * as repoViagem from './repositories/viagemRepository.js';
 const api = express();
 api.use(express.json());
 
 
 //http://localhost:5000/carros
 api.get('/carros', async (req, resp) => {
-    let registros = await listarCarros();
+    let registros = await repoCarros.listarCarros();
     resp.send(registros)
 })
 api.post('/carros', async (req, resp) => {
     let Nova = req.body;
-    let id = await adicionarCarros(Nova);
+    let id = await repoCarros.inserirCarros(Nova);
     resp.send({newId: id})
 })
 api.get('/carros/:id', async (req, resp) => {
     let id = Number(req.params.id);
-    let registros = await repoCarro.consultarCarros(id);
+    let registros = await repoCarros.consultarCarros(id);
     resp.send(registros);
   })
+api.get('/carros/filtro', async (req, resp) => {
+    let nome = req.query.nome;
+    let registros = await repoCarros.filtrarPorNome(nome);
+    resp.send(registros);
+})
+api.post('/curso', async (req, resp) => {
+    let novoCurso = req.body;
+  
+    let id = await repo.inserirCurso(novoCurso);
+    resp.send({ novoId: id });
+  })
+  
+  
+api.put('/carros/:id', async (req, resp) => {
+    let id = Number(req.params.id);
+    let novosDados = req.body;
+  
+    await repoCarros.alterarCarros(id, novosDados);
+    resp.send();
+})
+  
+  
+api.delete('/carros/:id', async (req, resp) => {
+    let id = Number(req.params.id);
+  
+    await repoCarros.removerCarros(id);
+    resp.send();
+})
+    
 
 
 //http://localhost:5000/turma
